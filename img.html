@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script src="js/jquery-3.6.0.js"></script>
+	<link href="css/mui.css" rel="stylesheet" />
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		mui.plusReady(function() {
+			plus.webview.currentWebview();
+		});
+	</script>
+	<style>
+		.Setu {
+			text-align: center;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+		}
+		.Next {
+			text-align: center;
+			position: absolute;
+			left: 50%;
+			top: 91%;
+			transform: translate(-50%,-50%);
+		}
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav" style="background-color: black;">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="index.html" id="home"></a>
+		<h1 class="mui-title">MiliSetu</h1>
+	</header>
+	<div class="Setu">
+		<a class="mui-icon mui-pull-right"   id="download">
+			<img src="" width="300px" id="SetuImage">
+		</a>
+	</div>
+	<div class="Next">
+		<button type="button" class="mui-btn mui-btn-royal" id="NextImage" onclick="">下一个图</button> 
+	</div>
+	<script type="text/javascript">
+		mui.init();
+		document.getElementById("home").addEventListener('tap', function() {
+			mui.openWindow('index.html', 'id');
+		});
+
+		mui('body').on('tap', 'a', function(e) {
+			var id = this.getAttribute('id');
+			if(id == "download"){
+				var DwonLoadImageUrl = document.getElementById("SetuImage");
+				var imgSrc = DwonLoadImageUrl.getAttribute("src");
+				var file = Math.random().toString(36).substr(2) + ".jpg";
+				console.log(file);
+				var btnArray = ['否', '是'];
+				mui.confirm('是否确定要下载该文件？', '', btnArray, function(e) {
+					if (e.index == 1) {
+						mui.ready(function() {
+							console.log(imgSrc);
+							var dtask = plus.downloader.createDownload(imgSrc, {
+								method:"GET",
+								filename:"_downloads/"+file
+							}, function(d, status){
+								// 下载完成
+								if(status == 200){
+									var fileSaveUrl = plus.io.convertLocalFileSystemURL(d.filename);
+									console.log("Download success: " + fileSaveUrl);
+									mui.confirm("Download success: " + fileSaveUrl,"成功！", ["确定", "取消"])
+									plus.runtime.openFile(fileSaveUrl, {}, function(e) {//打开文件
+										plus.nativeUI.toast('打开失败');
+									});
+								} else {
+									console.log("Download failed: " + status);
+									mui.confirm("Download failed: " + status,"失败！", ["确定", "取消"])
+								}  
+							});
+							//dtask.addEventListener("statechanged", onStateChanged, false);
+							dtask.start();
+						});
+					} else {
+						}
+				});
+			}
+		});
+		$.ajax({
+			type:"GET",
+			url:"http://110.40.226.38/SetuData",
+			dataType:"json",
+			success:function(data) {
+				var Random = data[String(Math.floor(Math.random()*10000+1))];
+				var obj = document.getElementById("SetuImage");
+				obj.src = "http://110.40.226.38"+Random;
+				console.log(Random);
+			}
+		});
+	
+		var Next = document.getElementById("NextImage");
+		Next.onclick = function() {
+			$.ajax({
+				type:"GET",
+				url:"http://110.40.226.38/SetuData",
+				dataType:"json",
+				success:function(data) {
+					var obj = document.getElementById("SetuImage");
+					var Random = data[String(Math.floor(Math.random()*10000+1))];
+					obj.src = "http://110.40.226.38"+Random;
+					console.log(Random);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

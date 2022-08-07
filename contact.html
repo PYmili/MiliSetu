@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	<style>
+		.ZFM {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav" style="background-color: black;">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="index.html" id="home"></a>
+		<h1 class="mui-title" style="color: aliceblue;">MiliSetu</h1>
+	</header>
+	<div class="ZFM">
+		<img src="img/zfm.jpg" width="400px">
+		<p style="text-align: center;">程序由作者：PYmili开发, 免费程序，请勿购买！受骗上当！</p>
+		<p style="text-align: center;">QQ群：706128290 作者QQ:2097632843</p>
+		<p style="text-align: center;">如果喜欢可以打赏作者，你的支持就是我最大的动力!</p>
+	</div>
+	<script type="text/javascript">
+		document.getElementById("home").addEventListener('tap', function() {
+			mui.openWindow('index.html', 'id');
+		});
+		
+	</script>
+</body>
+
+</html>
